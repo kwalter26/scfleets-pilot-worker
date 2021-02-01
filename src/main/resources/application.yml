@@ -1,0 +1,10 @@
+spring:
+  rabbitmq:
+    addresses: 
+
+  cloud:
+    stream:
+      bindings:
+        stringConsumer-in-0:
+          destination: pilot-info-events
+          group: v1-consumers
