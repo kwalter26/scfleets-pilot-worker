@@ -1,6 +1,6 @@
 spring:
   rabbitmq:
-    addresses: 
+    addresses:
 
   cloud:
     stream:
