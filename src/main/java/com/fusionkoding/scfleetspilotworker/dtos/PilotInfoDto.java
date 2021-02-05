@@ -15,5 +15,6 @@ public class PilotInfoDto {
     private String ueeRecordNumber;
     private String fluency;
     private String enlistDate;
-    private String country;
+    private String location;
+    private String orgSymbol;
 }

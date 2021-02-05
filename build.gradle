@@ -26,6 +26,7 @@ ext {
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
     //HTML Parser
     implementation 'org.jsoup:jsoup:1.13.1'
