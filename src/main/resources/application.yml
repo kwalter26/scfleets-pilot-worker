@@ -1,9 +1,14 @@
 spring:
   rabbitmq:
-    addresses:
+    addresses: ${RABBIT_URL}
   cloud:
     stream:
       bindings:
         pilotInfo-in-0:
           destination: pilot-info-events
           group: v1-consumers
+basic-auth: ${BASICAUTH}
+auth-url: ${AUTH_URL}
+pilot-url: ${PILOT_URL}
+grant: ${GRANT}
+scope: ${SCOPE}

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,7 @@ public class PilotInfoConsumer {
             String response = rsiSiteClient.getPilotInfo(request.getRsiHandle());
             PilotInfoDto pilot = parsePilot(response);
             log.info(pilot.getUeeRecordNumber());
-            pilotClient.updatePilot(request.getPilotId(),request.getRsiHandle(),pilot);
+            pilotClient.updatePilot(request.getPilotId(), request.getRsiHandle(), pilot);
         };
     }
 
@@ -38,13 +39,13 @@ public class PilotInfoConsumer {
         Document doc = Jsoup.parse(htmlString);
         Element element = doc.getElementById("public-profile");
 
-        String rsiHandle = element.select("div.profile-content.overview-content.clearfix > div.box-content.profile-wrapper.clearfix > div > div.profile.left-col > div > div.info > p:nth-child(2) > strong").first().text();
-        String ueeRecordNumber = element.select("div.profile-content.overview-content.clearfix > p > strong").first().text();
+        String rsiHandle = getElement(element, "div.profile-content.overview-content.clearfix > div.box-content.profile-wrapper.clearfix > div > div.profile.left-col > div > div.info > p:nth-child(2) > strong");
+        String ueeRecordNumber = getElement(element, "div.profile-content.overview-content.clearfix > p > strong");
         String imageUrl = element.select("div.profile-content.overview-content.clearfix > div.box-content.profile-wrapper.clearfix > div > div.profile.left-col > div > div.thumb > img").attr("src");
-        String enlistDate = element.select("div.profile-content.overview-content.clearfix > div.left-col > div > p:nth-child(1) > strong").first().text();
-        String location = element.select("div.profile-content.overview-content.clearfix > div.left-col > div > p:nth-child(2) > strong").first().text();
-        String fluency = element.select("div.profile-content.overview-content.clearfix > div.left-col > div > p:nth-child(3) > strong").first().text();
-        String orgSymbol = element.select("div.profile-content.overview-content.clearfix > div.box-content.profile-wrapper.clearfix > div > div.main-org.right-col.visibility-V > div > div.info > p:nth-child(2) > strong").first().text();
+        String enlistDate = getElement(element, "div.profile-content.overview-content.clearfix > div.left-col > div > p:nth-child(1) > strong");
+        String location = getElement(element, "div.profile-content.overview-content.clearfix > div.left-col > div > p:nth-child(2) > strong");
+        String fluency = getElement(element, "div.profile-content.overview-content.clearfix > div.left-col > div > p:nth-child(3) > strong");
+        String orgSymbol = getElement(element, "div.profile-content.overview-content.clearfix > div.box-content.profile-wrapper.clearfix > div > div.main-org.right-col.visibility-V > div > div.info > p:nth-child(2) > strong");
 
         return PilotInfoDto.builder()
                 .rsiHandle(rsiHandle)
@@ -55,5 +56,14 @@ public class PilotInfoConsumer {
                 .location(location)
                 .orgSymbol(orgSymbol)
                 .build();
+    }
+
+    private String getElement(Element selector, String s) {
+        String str = "";
+        Elements elements = selector.select(s);
+        if (!elements.isEmpty()) {
+            str = elements.first().text();
+        }
+        return str;
     }
 }
