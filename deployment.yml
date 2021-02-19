@@ -21,7 +21,7 @@ spec:
           - 192.168.86.228
       containers:
         - name: scfleets-pilot-worker
-          image: registry.kkwalter.com/scfleetspilotworker:0.0.8
+          image: registry.kkwalter.com/scfleetspilotworker:0.0.9
           ports:
             - containerPort: 8080
           env:
