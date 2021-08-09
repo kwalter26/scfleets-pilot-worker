@@ -9,6 +9,17 @@ spring:
           group: v1-consumers
 basic-auth: ${BASICAUTH}
 auth-url: ${AUTH_URL}
-pilot-url: ${PILOT_URL}
 grant: ${GRANT}
 scope: ${SCOPE}
+com:
+  scfleets:
+    baseUrl: ${BASE_URL}
+    pilotUri:
+      updatePilotRsiProfile: ${UPDATE_PILOT_RSI_PROFILE_URI}
+    accountUir:
+      accountAuthById: ${ACCOUNT_AUTH_BY_ID_URI}
+    spectrumClient:
+      baseUrl: ${RSI_BASE_URL}
+      messageUri: ${MESSAGE_URI}
+      lobbyInfoUri: ${LOBBY_INFO_URI}
+      autocompleteUri: ${AUTOCOMPLETE_URI}

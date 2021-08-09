@@ -1,5 +1,6 @@
 package com.fusionkoding.scfleetspilotworker.client;
 
+import com.fusionkoding.scfleetspilotworker.config.PropertyConfig;
 import com.fusionkoding.scfleetspilotworker.dtos.PilotInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class PilotClient {
 
-    @Value("${pilot-url}")
-    private String pilotUrl;
+    private final PropertyConfig propertyConfig;
 
     private final RestTemplate authRestTemplate;
 
@@ -26,7 +26,7 @@ public class PilotClient {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(pilotUrl);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(propertyConfig.getBaseUrl() + propertyConfig.getPilotUri().getUpdatePilotRsiProfile());
 
         HttpEntity<PilotInfoDto> entity = new HttpEntity<>(pilotInfoDto, headers);
 

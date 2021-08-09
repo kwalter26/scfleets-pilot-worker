@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: scfleets-pilot-worker-deployment
-  namespace: apps
   labels:
     app: scfleets-pilot-worker
 spec:
@@ -15,31 +14,37 @@ spec:
       labels:
         app: scfleets-pilot-worker
     spec:
-      dnsConfig:
-        nameservers:
-          - 8.8.8.8
-          - 192.168.86.228
       containers:
         - name: scfleets-pilot-worker
           image: registry.kkwalter.com/scfleetspilotworker:0.0.9
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: scfleets-pilot-worker-config
           env:
-            - name: BASICAUTH
+            - name: CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: basicauth-secret
-                  key: basicauth
+                  name: scfleets-secrets
+                  key: cognito-client-id
+            - name: CLIENT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: scfleets-secrets
+                  key: cognito-client-secret
             - name: RABBIT_URL
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-secret
-                  key: rabbitmq
+                  name: scfleets-secrets
+                  key: rabbitmq-addresses
             - name: AUTH_URL
-              value: https://staging-scfleets.auth.us-east-1.amazoncognito.com/oauth2/token
-            - name: PILOT_URL
-              value: https://staging.api.scfleets.com/pilots/{pilotId}/profiles/{rsiHandle}/
-            - name: GRANT
-              value: client_credentials
+              valueFrom:
+                secretKeyRef:
+                  name: scfleets-secrets
+                  key: cognito-access-token-uri
             - name: SCOPE
-              value: transactions/post
+              valueFrom:
+                secretKeyRef:
+                  name: scfleets-secrets
+                  key: cognito-client-scope
