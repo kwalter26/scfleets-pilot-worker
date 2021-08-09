@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: scfleets-pilot-worker
-          image: registry.kkwalter.com/scfleetspilotworker:0.0.9
+          image: kwalter26/scfleets-pilot-worker:latest
           ports:
             - containerPort: 8080
           envFrom:

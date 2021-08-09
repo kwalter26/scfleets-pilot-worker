@@ -7,7 +7,7 @@ spring:
         pilotInfo-in-0:
           destination: pilot-info-events
           group: v1-consumers
-basic-auth: ${BASICAUTH}
+basic-auth: ${CLIENT_ID}:${CLIENT_PASS}
 auth-url: ${AUTH_URL}
 grant: ${GRANT}
 scope: ${SCOPE}
